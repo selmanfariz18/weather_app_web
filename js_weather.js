@@ -8,15 +8,17 @@ const url = (city)=> `https://api.openweathermap.org/data/2.5/weather?q=${city}&
 
 
 async function getWeatherByLocation(city){
-     
+    try{
          const resp = await fetch(url(city), {
              origin: "cros" });
          const respData = await resp.json();
      
-           addWeatherToPage(respData);
+           addWeatherToPage(respData);}
+    catch{
+        alert("no city found")
+    }
           
      }
-
       function addWeatherToPage(data){
           const temp = Ktoc(data.main.temp);
 
@@ -24,12 +26,12 @@ async function getWeatherByLocation(city){
           weather.classList.add('weather');
 
           weather.innerHTML = `
-          <h2>${temp}°C</h2>
+          <h2>${temp}°C</h2><br>
           <small>Feels like ${Math.floor(data.main.feels_like-273.15)}°C</small><br>
           <small>${data.weather[0].main}</small><br>
-          <small>Humidity ${data.main.humidity}%</small><br>   
-          <small>Pressure ${data.main.pressure}mBar</small><br>   
-          <small>Speed ${data.wind.speed}Km/h</small><br>
+          <small>Humidity:${data.main.humidity}%</small><br>   
+          <small>Pressure:${data.main.pressure}mBar</small><br>   
+          <small>Wind Speed:${data.wind.speed}Km/h</small><br>
           
           `;
 
@@ -38,7 +40,7 @@ async function getWeatherByLocation(city){
           main.innerHTML= "";
            main.appendChild(weather);
       };
-
+    
 
      function Ktoc(K){
          return Math.floor(K - 273.15);
